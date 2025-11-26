@@ -2,56 +2,67 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name | Portfolio</title>
     
-    <title>My Personal GitHub Page 🚀</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #0072B2; /* Triton blue */
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to My Project/User Page!</h1>
-        
-        <p>This page is hosted automatically via **GitHub Pages** from the root of my repository.</p>
-        
-        <h2>Project Status: Benchmarking 📊</h2>
-        
-        <p>
-            I'm currently documenting my findings on high-performance computing. 
-            The goal is to show how my custom Triton kernel (L1) scales against a PyTorch baseline (L2).
-        </p>
-        
-        <ul>
-            <li>**Repo:** Find the full code and data plots in the repository.</li>
-            <li>**Contact:** Feel free to connect with me on GitHub!</li>
-        </ul>
-        
-        <a href="https://github.com/yourusername" target="_blank">Visit My GitHub Profile</a>
-        
+    <header>
+        <div class="header-container">
+            <h1>[Your Name]</h1>
+            <nav>
+                <a href="#profile">Profile</a>
+                <a href="#projects">Projects</a>
+                <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="profile" class="profile-section">
+            <h2 class="section-title">My Profile 🧑‍💻</h2>
+            <div class="profile-content">
+                <p>Hello! I'm a machine learning engineer focused on optimizing deep learning kernels and benchmarking performance, especially for large models. I specialize in Python, PyTorch, and low-level optimization using **Triton**.</p>
+                
+                <h3>Skills & Focus</h3>
+                <ul>
+                    <li>GPU Programming (CUDA, Triton)</li>
+                    <li>Attention Mechanisms (Flash Attention)</li>
+                    <li>LLMs and Generative Models</li>
+                    <li>Performance Benchmarking</li>
+                </ul>
+            </div>
+        </section>
+
         <hr>
 
-        <footer>
-            <p>&copy; 2025 [Your Name/Company Name]. All Rights Reserved.</p>
-        </footer>
-    </div>
+        <section id="projects" class="projects-section">
+            <h2 class="section-title">My Projects 🛠️</h2>
+            
+            <div class="project-card">
+                <h3>1. Flash Attention from Scratch</h3>
+                <p class="description">
+                    Implementation and detailed benchmarking of the Flash Attention algorithm using Triton, comparing its scaling efficiency against PyTorch's native MatMul.
+                </p>
+                <a href="https://github.com/yourusername/flash-attention-repo" target="_blank">View on GitHub</a>
+            </div>
+
+            <div class="project-card">
+                <h3>2. Minimalistic Website Template</h3>
+                <p class="description">
+                    A simple, responsive, single-page portfolio template for quickly launching a GitHub Pages site.
+                </p>
+                <a href="https://github.com/yourusername/another-project-repo" target="_blank">View on GitHub</a>
+            </div>
+
+            </section>
+    </main>
+
+    <footer>
+        <p>Built with minimal effort on GitHub Pages. &copy; 2025</p>
+    </footer>
 </body>
 </html>

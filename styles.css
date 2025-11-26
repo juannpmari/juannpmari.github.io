@@ -1,0 +1,129 @@
+/* --- Reset and Basic Typography --- */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Ensure the main content stays centered and readable */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* --- Header & Navigation --- */
+header {
+    background-color: #fff;
+    border-bottom: 2px solid #eee;
+    padding: 15px 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.header-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-weight: 700;
+    font-size: 1.8em;
+    color: #333;
+    margin: 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: #007bff; /* Accent color for links */
+    margin-left: 20px;
+    font-weight: 400;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #0056b3;
+}
+
+/* --- Section Styling --- */
+.section-title {
+    font-size: 2em;
+    font-weight: 300; /* Lighter weight for modern look */
+    color: #555;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+/* --- Profile Section Specifics --- */
+.profile-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+/* --- Projects Section Specifics --- */
+.project-card {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    border-left: 4px solid #007bff; /* Visual marker for projects */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.project-card h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.project-card a {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.project-card a:hover {
+    background-color: #0056b3;
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+    font-size: 0.9em;
+    color: #888;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 600px) {
+    .header-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    nav a {
+        display: block;
+        margin: 5px 0;
+    }
+}
