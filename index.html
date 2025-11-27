@@ -1,68 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name | Portfolio</title>
-    
-    <link rel="stylesheet" href="styles.css">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <div class="header-container">
-            <h1>[Your Name]</h1>
-            <nav>
-                <a href="#profile">Profile</a>
-                <a href="#projects">Projects</a>
-                <a href="https://github.com/yourusername" target="_blank">GitHub</a>
-            </nav>
-        </div>
-    </header>
-
-    <main class="container">
-        <section id="profile" class="profile-section">
-            <h2 class="section-title">My Profile 🧑‍💻</h2>
-            <div class="profile-content">
-                <p>Hello! I'm a machine learning engineer focused on optimizing deep learning kernels and benchmarking performance, especially for large models. I specialize in Python, PyTorch, and low-level optimization using **Triton**.</p>
-                
-                <h3>Skills & Focus</h3>
-                <ul>
-                    <li>GPU Programming (CUDA, Triton)</li>
-                    <li>Attention Mechanisms (Flash Attention)</li>
-                    <li>LLMs and Generative Models</li>
-                    <li>Performance Benchmarking</li>
-                </ul>
-            </div>
-        </section>
-
-        <hr>
-
-        <section id="projects" class="projects-section">
-            <h2 class="section-title">My Projects 🛠️</h2>
-            
-            <div class="project-card">
-                <h3>1. Flash Attention from Scratch</h3>
-                <p class="description">
-                    Implementation and detailed benchmarking of the Flash Attention algorithm using Triton, comparing its scaling efficiency against PyTorch's native MatMul.
-                </p>
-                <a href="https://github.com/yourusername/flash-attention-repo" target="_blank">View on GitHub</a>
-            </div>
-
-            <div class="project-card">
-                <h3>2. Minimalistic Website Template</h3>
-                <p class="description">
-                    A simple, responsive, single-page portfolio template for quickly launching a GitHub Pages site.
-                </p>
-                <a href="https://github.com/yourusername/another-project-repo" target="_blank">View on GitHub</a>
-            </div>
-
-            </section>
-    </main>
-
-    <footer>
-        <p>Built with minimal effort on GitHub Pages. &copy; 2025</p>
-    </footer>
-</body>
-</html>
+<h1 id="juan-mar-">Juan Marí</h1>
+<p>I’m an ML Engineer experienced in transforming business problems into production-grade AI solutions. I thrive in environments with ambiguous problems, working closely with stakeholders to ensure solutions align with their needs.
+My expertise includes building agentic systems, RAG chatbots that answer customer queries and LLM-powered applications for document analysis, leveraging state of the art frameworks like Langchain and LangGraph, cloud technologies and Python.
+I enjoy implementing papers and building stuff from scratch to understand how things work at the lowest level.</p>
+<h2 id="papers-implementation-from-scratch">Papers implementation from scratch</h2>
+<ul>
+<li><p><a href="https://github.com/juannpmari/qwen3-from-scratch">Qwen-3</a>: this model uses modern architecture</p>
+<ol>
+<li>Rotary Positional Embeddings (RoPE)</li>
+<li>Grouped Query Attention (GQA)</li>
+<li>RMSNorm</li>
+<li>SwigLU</li>
+</ol>
+</li>
+<li><p><a href="https://github.com/juannpmari/flash-attention-from-scratch">Flash Attention</a>: an optimization technique for attention layers. It&#39;s comprised by a Triton kernel that leverages 3 techniques:</p>
+<ol>
+<li>Tiling: to parallelize matmul computation</li>
+<li>Kernel fusion: to minimize data transfer from HBM to SRAM </li>
+<li>Recomputation, to avoid storing the large O(N2) activations for backward</li>
+</ol>
+</li>
+</ul>
+<h2 id="engineering-projects">Engineering projects</h2>
+<ul>
+<li><p><a href="https://github.com/juannpmari/inference-server">Inference server</a>: a server to serve LLMs efficiently</p>
+</li>
+<li><p><a href="https://github.com/juannpmari/stock-analyzer-mcp">MCP for stock analysis</a>: an MCP server built on top of YahooFinance API</p>
+</li>
+</ul>
