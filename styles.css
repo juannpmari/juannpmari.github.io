@@ -1,22 +1,22 @@
 /* style.css
-   Minimalistic, formal & modern portfolio styles for the provided HTML.
-   - Uses a neutral palette
-   - Responsive typography with clamp()
-   - Clear spacing, readable measures, subtle card visuals
-   - Accessible focus states and high-contrast link styles
+    Minimalistic, formal & modern portfolio styles for the provided HTML.
+    - USES A MODERN DARK THEME PALETTE
+    - Responsive typography with clamp()
+    - Clear spacing, readable measures, subtle card visuals
+    - Accessible focus states and high-contrast link styles
 */
 
 /* ---- Fonts ---- */
 /* If you prefer a local font, replace the @import with your font stack */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
 
 :root{
-  /* Colors */
+  /* Colors (Light Theme - Kept for fallback/print, but main focus is dark mode) */
   --bg: #f7f8f9;            /* page background */
   --card: #ffffff;          /* panel background */
-  --muted: #6b7280;         /* secondary text */
-  --text: #0f172a;          /* primary text */
-  --accent: #0b63ff;        /* link / accent */
+  --muted: #6b7280;          /* secondary text */
+  --text: #0f172a;           /* primary text */
+  --accent: #0b63ff;         /* link / accent */
   --accent-weak: rgba(11,99,255,0.08);
   --border: #e6e9ee;
   --glass: rgba(15,23,42,0.03);
@@ -59,7 +59,8 @@ body{
   width: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
-  background: linear-gradient(180deg, var(--card), rgba(255,255,255,0.9));
+  /* Updated card background to be solid in light mode for better contrast */
+  background: var(--card);
   border-radius: calc(var(--radius) + 4px);
   padding: clamp(20px, 4vw, 48px);
   box-shadow: var(--shadow-sm);
@@ -79,7 +80,7 @@ body > :not(.container){
 /* ---- Header / Name ---- */
 h1{
   margin: 0 0 8px 0;
-  font-weight: 700;
+  font-weight: 700; /* Maintained for name */
   letter-spacing: -0.02em;
   font-size: clamp(1.6rem, 3.8vw, 2.4rem);
   line-height: 1.05;
@@ -124,6 +125,7 @@ p:first-of-type{
   color: #0b1220;
   opacity: 0.95;
   font-size: clamp(1rem, 1.6vw, 1.06rem);
+  /* The color here will be overridden in the dark mode block */
 }
 
 /* ---- Lists (projects / papers) ---- */
@@ -135,13 +137,22 @@ ul, ol{
 
 /* Project / paper list items — render as cards */
 ul > li{
-  background: linear-gradient(180deg, rgba(255,255,255,0.0), rgba(255,255,255,0.02));
+  /* Switched to a solid color and slightly darker border for modern dark card */
+  background: var(--glass);
   border-radius: 10px;
   padding: 12px 14px;
   margin: 10px 0;
-  border: 1px solid var(--glass);
+  border: 1px solid var(--border);
   display: block;
+  /* Add a subtle lift/shadow on hover for interaction */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+ul > li:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
 
 /* Make nested ordered lists compact and indented */
 ul > li ol{
@@ -153,12 +164,14 @@ ul > li ol{
 a{
   color: var(--accent);
   text-decoration: none;
+  /* Increased link weight slightly for better dark mode visibility */
   font-weight: 600;
   border-bottom: 1px solid rgba(11,99,255,0.12);
   padding-bottom: 2px;
   transition: color 160ms ease, transform 120ms ease;
 }
 a:hover, a:focus{
+  /* Adjusted hover color for better contrast in dark mode */
   color: #0847c9;
   transform: translateY(-1px);
   outline: none;
@@ -224,24 +237,69 @@ hr{
   a::after{ content: " (" attr(href) ")"; font-size: 90%; color: #222; }
 }
 
-/* Dark mode support for users who prefer it */
+/* Dark mode support for users who prefer it - MODIFIED FOR MODERN DARK THEME */
 @media (prefers-color-scheme: dark){
   :root{
-    --bg: #0b1120;
-    --card: #071028;
-    --muted: #9aa4b2;
-    --text: #e6eef8;
-    --accent: #4da1ff;
-    --accent-weak: rgba(77,161,255,0.08);
-    --border: rgba(255,255,255,0.06);
-    --glass: rgba(255,255,255,0.02);
-    --shadow-sm: 0 6px 20px rgba(2,6,23,0.6);
+    /* Dark Grey/Black-y Palette */
+    --bg: #111827;            /* Base Dark Gray */
+    --card: #1f2937;          /* Slightly lighter dark gray for cards/container */
+    --muted: #9ca3af;         /* Light gray for secondary text */
+    --text: #f3f4f6;          /* Near white for primary text */
+    --accent: #60a5fa;        /* Soft blue accent */
+    --accent-weak: rgba(96,165,250,0.12);
+    --border: rgba(255,255,255,0.15); /* Subtle white border */
+    --glass: rgba(255,255,255,0.06); /* Very subtle card background */
+    /* Stronger shadow for depth on dark background */
+    --shadow-sm: 0 10px 30px rgba(0,0,0,0.4); 
   }
+  
   body{
-    background: linear-gradient(180deg,var(--bg), #02030a 60%);
+    /* Gradient for shade: dark gray to slightly deeper dark gray/black-y at the bottom */
+    background: linear-gradient(180deg,var(--bg), #0f131a 80%);
   }
-  a{ border-bottom-color: rgba(77,161,255,0.13); }
-  h1::after{ box-shadow: 0 8px 28px rgba(77,161,255,0.06); }
+
+  /* White letters/thick letters consideration */
+  h1, h2, p, ul, ol, .kv strong {
+    color: var(--text) !important; /* Ensure all text is the bright white */
+    /* Text thickness is controlled by font-weight in the base styles (700 for h1, 600 for h2/links/strong, 400 for p) which is already good */
+  }
+
+  p:first-of-type{
+    color: var(--text); /* Set lead paragraph text to primary text color */
+  }
+
+  .container{
+    /* Use solid card color for main panel */
+    background: var(--card);
+    border: 1px solid var(--border);
+  }
+
+  ul > li{
+    /* Use the subtle glass for list items, slightly transparent over the card background */
+    background: var(--glass);
+    border-color: var(--border);
+  }
+
+  a{ border-bottom-color: rgba(96,165,250,0.3); } /* Clearer underline */
+  a:hover{ color: #3b82f6; } /* Slightly brighter blue on hover */
+  
+  h1::after{ 
+    box-shadow: 0 8px 28px var(--accent-weak); /* Subtle light shadow */
+    /* Updated gradient to match the new accent color */
+    background: linear-gradient(90deg,var(--accent), #93c5fd);
+  }
+  
+  hr{ background: var(--border); }
+  
+  code, pre{
+    background: rgba(255,255,255,0.08); /* Light background for code blocks */
+    color: var(--text);
+  }
+
+  /* Accessibility focus state */
+  :focus{
+    outline: 3px solid rgba(96,165,250,0.4); 
+  }
 }
 
 /* Small utilities (optional) */
