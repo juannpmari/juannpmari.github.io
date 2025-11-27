@@ -47,24 +47,32 @@ body{
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   line-height: var(--lead);
-  padding: clamp(18px, 3vw, 32px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  line-height: var(--lead);
+  /* REVISED: Keep a general padding, but rely on margin for vertical spacing */
+  padding: clamp(18px, 3vw, 32px); 
+  /* REMOVE vertical centering to allow content to start at the top */
+  display: block; 
+  align-items: initial;
+  justify-content: initial;
   font-size: 16px;
+  /* Add minimum padding to the top of the body itself */
+  padding-top: 40px;
 }
 
 /* Centered container with readable measure */
 .container{
   width: 100%;
-  max-width: var(--max-width);
+  /* Keep max-width to ensure readability, but remove background/shadow/border */
+  max-width: var(--max-width); 
   margin: 0 auto;
-  /* Updated card background to be solid in light mode for better contrast */
-  background: var(--card);
+  /* REMOVE the visible 'box' look: */
+  background: transparent !important; /* Forces transparency in both themes */
+  box-shadow: none !important;
+  border: none !important;
+  
+  /* Keep structure padding for the content inside */
   border-radius: calc(var(--radius) + 4px);
   padding: clamp(20px, 4vw, 48px);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border);
 }
 
 /* If user doesn't wrap content in .container, make the body behave similarly */
@@ -269,9 +277,10 @@ hr{
   }
 
   .container{
-    /* Use solid card color for main panel */
-    background: var(--card);
-    border: 1px solid var(--border);
+  /* Ensure the container is transparent in dark mode too */
+    background: transparent !important; 
+    border: none !important;
+    box-shadow: none !important;
   }
 
   ul > li{
