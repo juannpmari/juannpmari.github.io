@@ -17,8 +17,8 @@
 <nav class="sitenav">
   <a class="sitenav-brand" href="#top">JM<span>.</span></a>
   <div class="sitenav-links">
-    <a href="#papers-implementation-from-scratch">Papers</a>
-    <a href="#engineering-projects">Projects</a>
+    <a href="#key-projects">Highlights</a>
+    <a href="#other-projects">More</a>
     <a class="sitenav-cta" href="https://github.com/juannpmari">GitHub ↗</a>
   </div>
 </nav>
@@ -34,21 +34,26 @@
   </header>
 
   <section class="section">
-    <h2 id="papers-implementation-from-scratch"><span class="section-icon">📄</span>Paper implementations from scratch</h2>
+    <h2 id="key-projects"><span class="section-icon">⭐</span>Key projects</h2>
     <ul class="card-grid">
-      <li class="project-card">
-        <h3><a href="https://github.com/juannpmari/qwen3-from-scratch">Qwen-3</a></h3>
-        <p>this model uses modern architecture</p>
-        <ol class="feature-list">
-          <li>Rotary Positional Embeddings (RoPE)</li>
-          <li>Grouped Query Attention (GQA)</li>
-          <li>RMSNorm</li>
-          <li>SwigLU</li>
-        </ol>
+      <li class="project-card card-feature">
+        <span class="ribbon">Benchmarked</span>
+        <h3><a href="https://github.com/juannpmari/inference-server">Inference server</a></h3>
+        <p>a server to serve LLMs efficiently</p>
+        <div class="stats">
+          <div class="stat"><span class="stat-value">3.7K</span><span class="stat-label">peak tok/s</span></div>
+          <div class="stat"><span class="stat-value">10.8×</span><span class="stat-label">throughput @ 16× load</span></div>
+          <div class="stat"><span class="stat-value">91%</span><span class="stat-label">of peak @ 40% latency</span></div>
+        </div>
         <div class="badges">
-          <span class="badge">PyTorch</span>
-          <span class="badge">Transformer</span>
-          <span class="badge">From scratch</span>
+          <span class="badge">vLLM</span>
+          <span class="badge">gRPC</span>
+          <span class="badge">Redis KV cache</span>
+          <span class="badge">Kubernetes</span>
+          <span class="badge">Prometheus</span>
+        </div>
+        <div class="card-links">
+          <a class="cta" href="projects/inference-server.html">View benchmarks &amp; architecture →</a>
         </div>
       </li>
 
@@ -74,26 +79,21 @@
   </section>
 
   <section class="section">
-    <h2 id="engineering-projects"><span class="section-icon">⚙️</span>Engineering projects</h2>
+    <h2 id="other-projects"><span class="section-icon">📦</span>Other projects</h2>
     <ul class="card-grid">
-      <li class="project-card card-feature">
-        <span class="ribbon">Benchmarked</span>
-        <h3><a href="https://github.com/juannpmari/inference-server">Inference server</a></h3>
-        <p>a server to serve LLMs efficiently</p>
-        <div class="stats">
-          <div class="stat"><span class="stat-value">3.7K</span><span class="stat-label">peak tok/s</span></div>
-          <div class="stat"><span class="stat-value">10.8×</span><span class="stat-label">throughput @ 16× load</span></div>
-          <div class="stat"><span class="stat-value">91%</span><span class="stat-label">of peak @ 40% latency</span></div>
-        </div>
+      <li class="project-card">
+        <h3><a href="https://github.com/juannpmari/qwen3-from-scratch">Qwen-3</a></h3>
+        <p>this model uses modern architecture</p>
+        <ol class="feature-list">
+          <li>Rotary Positional Embeddings (RoPE)</li>
+          <li>Grouped Query Attention (GQA)</li>
+          <li>RMSNorm</li>
+          <li>SwigLU</li>
+        </ol>
         <div class="badges">
-          <span class="badge">vLLM</span>
-          <span class="badge">gRPC</span>
-          <span class="badge">Redis KV cache</span>
-          <span class="badge">Kubernetes</span>
-          <span class="badge">Prometheus</span>
-        </div>
-        <div class="card-links">
-          <a class="cta" href="projects/inference-server.html">View benchmarks &amp; architecture →</a>
+          <span class="badge">PyTorch</span>
+          <span class="badge">Transformer</span>
+          <span class="badge">From scratch</span>
         </div>
       </li>
 
