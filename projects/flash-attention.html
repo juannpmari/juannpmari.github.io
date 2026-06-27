@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles.css">
+  <title>Flash Attention from Scratch — Benchmarks · Juan Marí</title>
+</head>
+<body>
+
+<div class="bg-decor" aria-hidden="true">
+  <span class="orb orb-1"></span>
+  <span class="orb orb-2"></span>
+  <span class="grid-overlay"></span>
+</div>
+
+<div class="container">
+
+  <nav class="topnav">
+    <a class="back-link" href="../index.html">← Back to portfolio</a>
+    <a class="repo-link" href="https://github.com/juannpmari/flash-attention">View on GitHub ↗</a>
+  </nav>
+
+  <header class="hero">
+    <p class="eyebrow">Paper implementation</p>
+    <h1>Flash Attention <span class="role">— from scratch</span></h1>
+    <p class="lead">A high-performance implementation of the <a href="https://arxiv.org/abs/2205.14135">Flash Attention</a> algorithm in <a href="https://openai.com/index/triton/">Triton</a>, with both forward and backward passes and memory-access patterns optimized for modern GPUs. Attention is fundamentally memory-bound — naive implementations move O(N²) data between HBM and SRAM — and this kernel tackles that with tiling, kernel fusion and recomputation. Benchmarks below were run on a GeForce RTX 4050 (6GB), CUDA 13.0.</p>
+  </header>
+
+  <section class="section">
+    <h2><span class="section-icon">📊</span>Headline numbers</h2>
+    <div class="stat-grid">
+      <div class="stat-box"><span class="stat-box-value">3–5×</span><span class="stat-box-label">faster than the naive implementation for sequence lengths &gt; 1K</span></div>
+      <div class="stat-box"><span class="stat-box-value">&lt; O(N²)</span><span class="stat-box-label">sub-quadratic memory-bandwidth scaling vs. naive attention</span></div>
+      <div class="stat-box"><span class="stat-box-value">16×16</span><span class="stat-box-label">default tile size, configurable for different GPU architectures</span></div>
+      <div class="stat-box"><span class="stat-box-value">fwd + bwd</span><span class="stat-box-label">both passes implemented with full PyTorch autograd support</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2><span class="section-icon">📈</span>Benchmark plots</h2>
+    <p class="lead">Both curves closely match the shapes reported in the original Flash Attention paper — confirming the expected latency and memory behaviour of the kernel.</p>
+    <div class="chart-grid">
+      <figure class="chart">
+        <img loading="lazy" src="https://raw.githubusercontent.com/juannpmari/flash-attention/master/resources/forward_latency_loglog_scaling_embed128_dtypefloat32.png" alt="Log-log plot of forward-pass latency versus sequence length">
+        <figcaption>Median forward-pass latency vs. sequence length (embedding dim 128, float32, 16×16 tiling).</figcaption>
+      </figure>
+      <figure class="chart">
+        <img loading="lazy" src="https://raw.githubusercontent.com/juannpmari/flash-attention/master/resources/memory_loglog_scaling_embed256_dtypefloat32.png" alt="Log-log plot of peak memory footprint versus sequence length">
+        <figcaption>Peak forward-pass memory footprint vs. sequence length (float32, 16×16 tiling).</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2><span class="section-icon">⚡</span>Core optimizations</h2>
+    <ul class="card-grid">
+      <li class="project-card">
+        <h3>Tiling</h3>
+        <p>Partitions Q, K, V into small tiles (default 16×16) that fit in SRAM, which requires an online (streaming) softmax to keep numerics correct across tiles.</p>
+      </li>
+      <li class="project-card">
+        <h3>Kernel fusion</h3>
+        <p>Fuses matmul, softmax and scaling into a single GPU kernel, minimizing round-trips between HBM and SRAM.</p>
+      </li>
+      <li class="project-card">
+        <h3>Recomputation</h3>
+        <p>Avoids materializing the O(N²) attention matrix by recomputing it during the backward pass — trading a little compute for a large memory saving.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2><span class="section-icon">🔍</span>Key insights</h2>
+    <ul class="card-grid">
+      <li class="project-card">
+        <h3>Matches the paper</h3>
+        <p>Both the latency and memory curves reproduce the shapes from the original Flash Attention paper.</p>
+      </li>
+      <li class="project-card">
+        <h3>Sub-quadratic scaling</h3>
+        <p>Achieves better-than-O(N²) scaling for memory bandwidth as sequence length grows.</p>
+      </li>
+      <li class="project-card">
+        <h3>Real speedup</h3>
+        <p>3–5× faster than the naive implementation once sequence length exceeds ~1K tokens.</p>
+      </li>
+    </ul>
+  </section>
+
+  <p class="footnote">Benchmarks run on a GeForce RTX 4050 (6GB), CUDA 13.0, float32, 16×16 tiling. Plots are sourced live from the project repository.</p>
+
+</div>
+
+</body>
+</html>
