@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles.css">
+  <title>Inference Server — Benchmarks & Architecture · Juan Marí</title>
+</head>
+<body>
+
+<div class="bg-decor" aria-hidden="true">
+  <span class="orb orb-1"></span>
+  <span class="orb orb-2"></span>
+  <span class="grid-overlay"></span>
+</div>
+
+<div class="container">
+
+  <nav class="topnav">
+    <a class="back-link" href="../index.html">← Back to portfolio</a>
+    <a class="repo-link" href="https://github.com/juannpmari/inference-server">View on GitHub ↗</a>
+  </nav>
+
+  <header class="hero">
+    <p class="eyebrow">Engineering project</p>
+    <h1>Inference Server <span class="role">— serving LLMs efficiently</span></h1>
+    <p class="lead">A production-style LLM serving stack built around vLLM continuous batching, split into three services — a Gateway, a vLLM Engine and a Sidecar — with an OpenAI-compatible API, runtime LoRA hot-swapping, a 3-tier KV cache and full observability. Below are the benchmark results measured on Qwen2-0.5B on a single NVIDIA GPU.</p>
+  </header>
+
+  <section class="section">
+    <h2><span class="section-icon">📊</span>Headline numbers</h2>
+    <div class="stat-grid">
+      <div class="stat-box"><span class="stat-box-value">3,718</span><span class="stat-box-label">peak throughput (tok/s) at N=256</span></div>
+      <div class="stat-box"><span class="stat-box-value">10.8×</span><span class="stat-box-label">throughput gain for 16× concurrency (313 → 3,371 tok/s, N=4→64)</span></div>
+      <div class="stat-box"><span class="stat-box-value">91% / 40%</span><span class="stat-box-label">N=64 sweet spot: 91% of peak throughput at 40% of peak latency</span></div>
+      <div class="stat-box"><span class="stat-box-value">99.3%</span><span class="stat-box-label">of end-to-end latency is decode (32→256 tokens); prefill TTFT ≈ 20ms</span></div>
+      <div class="stat-box"><span class="stat-box-value">6.2×</span><span class="stat-box-label">p99/p50 TTFT ratio at N=128 — overload canary</span></div>
+      <div class="stat-box"><span class="stat-box-value">179ms</span><span class="stat-box-label">p99 TTFT at 50 RPS under Poisson load</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2><span class="section-icon">📈</span>Concurrency sweep</h2>
+    <p class="lead">Throughput scales near-linearly with concurrency until the GPU saturates, while tail latency stays flat through the sweet spot and then climbs — the Pareto curve makes the optimal operating point explicit.</p>
+    <div class="chart-grid">
+      <figure class="chart">
+        <img loading="lazy" src="https://raw.githubusercontent.com/juannpmari/inference-server/master/benchmarks/results/concurrent/concurrency_sweep/throughput_vs_concurrency_client.png" alt="Throughput versus concurrency">
+        <figcaption>Throughput vs. concurrency — linear scaling 313 → 3,371 tok/s (N=4 → 64).</figcaption>
+      </figure>
+      <figure class="chart">
+        <img loading="lazy" src="https://raw.githubusercontent.com/juannpmari/inference-server/master/benchmarks/results/concurrent/concurrency_sweep/throughput_latency_pareto_client.png" alt="Throughput versus latency Pareto frontier">
+        <figcaption>Throughput–latency Pareto — N=64 delivers 91% of peak throughput at 40% of peak latency.</figcaption>
+      </figure>
+      <figure class="chart">
+        <img loading="lazy" src="https://raw.githubusercontent.com/juannpmari/inference-server/master/benchmarks/results/concurrent/concurrency_sweep/ttft_vs_concurrency.png" alt="Time to first token versus concurrency">
+        <figcaption>TTFT vs. concurrency — p99/p50 ratio reaches 6.2× at N=128, signalling overload.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2><span class="section-icon">🧩</span>Latency composition</h2>
+    <p class="lead">Decomposing a 32→256-token request shows decode dominates end-to-end time (99.3%), with prefill (TTFT) at roughly 20ms — confirming that throughput optimizations should target the decode loop.</p>
+    <div class="chart-grid">
+      <figure class="chart chart-wide">
+        <img loading="lazy" src="https://raw.githubusercontent.com/juannpmari/inference-server/master/benchmarks/results/sequential/latency_composition/latency_composition_mean.png" alt="Mean latency composition: prefill versus decode">
+        <figcaption>Mean latency composition — prefill vs. decode for a 32→256-token request.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2><span class="section-icon">🌐</span>Realistic (Poisson) load</h2>
+    <p class="lead">Under a realistic Poisson arrival process throughput grows linearly up to ~10 RPS and saturates beyond ~30 RPS, with p99 TTFT held to 179ms at 50 RPS.</p>
+    <div class="chart-grid">
+      <figure class="chart chart-wide">
+        <img loading="lazy" src="https://raw.githubusercontent.com/juannpmari/inference-server/master/benchmarks/results/realistic/arrival_rate_sweep/throughput_vs_arrival_rate_client.png" alt="Throughput versus arrival rate">
+        <figcaption>Throughput vs. arrival rate — linear to ~10 RPS, saturating past ~30 RPS.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2><span class="section-icon">🏗️</span>Architecture highlights</h2>
+    <ul class="card-grid">
+      <li class="project-card">
+        <h3>3-service split</h3>
+        <p>Gateway, vLLM Engine and Sidecar, exposed through an OpenAI-compatible API with graceful, drain-aware shutdown.</p>
+      </li>
+      <li class="project-card">
+        <h3>Runtime LoRA hot-swap</h3>
+        <p>Adapters loaded and swapped at runtime with LRU eviction — no restart to switch fine-tunes.</p>
+      </li>
+      <li class="project-card">
+        <h3>3-tier KV cache</h3>
+        <p>Prefix cache + L1 CPU (1024 × 128KB blocks over gRPC) + L2 Redis with consistent hashing.</p>
+      </li>
+      <li class="project-card">
+        <h3>Observability &amp; deploy</h3>
+        <p>Kubernetes manifests with Prometheus / Grafana metrics for production-grade operation.</p>
+      </li>
+    </ul>
+  </section>
+
+  <p class="footnote">Benchmarks run on Qwen2-0.5B, single NVIDIA GPU, vLLM continuous batching. Figures are sourced live from the project repository.</p>
+
+</div>
+
+</body>
+</html>

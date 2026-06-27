@@ -8,38 +8,119 @@
 </head>
 <body>
 
+<div class="bg-decor" aria-hidden="true">
+  <span class="orb orb-1"></span>
+  <span class="orb orb-2"></span>
+  <span class="grid-overlay"></span>
+</div>
+
 <div class="container">
-<h1 id="juan-mar-">Juan Marí - ML Engineer</h1>
-<p>I’m an ML Engineer experienced in transforming business problems into production-grade AI solutions. I thrive in environments with ambiguous problems, working closely with stakeholders to ensure solutions align with their needs.
-My expertise includes building agentic systems, RAG chatbots that answer customer queries and LLM-powered applications for document analysis, leveraging state of the art frameworks like Langchain and LangGraph, cloud technologies and Python.
-I enjoy implementing papers and building stuff from scratch to understand how things work at the lowest level.</p>
-<h2 id="papers-implementation-from-scratch">Paper implementations from scratch</h2>
-<ul>
-<li><p><a href="https://github.com/juannpmari/qwen3-from-scratch">Qwen-3</a>: this model uses modern architecture</p>
-<ol>
-<li>Rotary Positional Embeddings (RoPE)</li>
-<li>Grouped Query Attention (GQA)</li>
-<li>RMSNorm</li>
-<li>SwigLU</li>
-</ol>
-</li>
-<li><p><a href="https://github.com/juannpmari/flash-attention-from-scratch">Flash Attention</a>: an optimization technique for attention layers. It&#39;s comprised by a Triton kernel that leverages 3 techniques:</p>
-<ol>
-<li>Tiling: to parallelize matmul computation</li>
-<li>Kernel fusion: to minimize data transfer from HBM to SRAM </li>
-<li>Recomputation, to avoid storing the large O(N2) activations for backward</li>
-</ol>
-</li>
-</ul>
-<h2 id="engineering-projects">Engineering projects</h2>
-<ul>
-<li><p><a href="https://github.com/juannpmari/inference-server">Inference server</a>: a server to serve LLMs efficiently</p>
-</li>
-<li><p><a href="https://github.com/juannpmari/stock-analyzer-mcp">MCP for stock analysis</a>: an MCP server built on top of YahooFinance API</p>
-</li>
-<li><p><a href="https://github.com/juannpmari/travel-planner-langgraph">Multi-agent for travel planning</a>: a multi-agent system built on Langgraph to help planning trips</p>
-</li>
-</ul>
+
+  <header class="hero">
+    <p class="eyebrow">Portfolio</p>
+    <h1 id="juan-mar-">Juan Marí <span class="role">— ML Engineer</span></h1>
+    <p class="lead">I’m an ML Engineer experienced in transforming business problems into production-grade AI solutions. I thrive in environments with ambiguous problems, working closely with stakeholders to ensure solutions align with their needs.
+    My expertise includes building agentic systems, RAG chatbots that answer customer queries and LLM-powered applications for document analysis, leveraging state of the art frameworks like Langchain and LangGraph, cloud technologies and Python.
+    I enjoy implementing papers and building stuff from scratch to understand how things work at the lowest level.</p>
+  </header>
+
+  <section class="section">
+    <h2 id="papers-implementation-from-scratch"><span class="section-icon">📄</span>Paper implementations from scratch</h2>
+    <ul class="card-grid">
+      <li class="project-card">
+        <h3><a href="https://github.com/juannpmari/qwen3-from-scratch">Qwen-3</a></h3>
+        <p>this model uses modern architecture</p>
+        <ol class="feature-list">
+          <li>Rotary Positional Embeddings (RoPE)</li>
+          <li>Grouped Query Attention (GQA)</li>
+          <li>RMSNorm</li>
+          <li>SwigLU</li>
+        </ol>
+        <div class="badges">
+          <span class="badge">PyTorch</span>
+          <span class="badge">Transformer</span>
+          <span class="badge">From scratch</span>
+        </div>
+      </li>
+
+      <li class="project-card">
+        <h3><a href="https://github.com/juannpmari/flash-attention">Flash Attention</a></h3>
+        <p>an optimization technique for attention layers. It's comprised by a Triton kernel that leverages 3 techniques:</p>
+        <ol class="feature-list">
+          <li>Tiling: to parallelize matmul computation</li>
+          <li>Kernel fusion: to minimize data transfer from HBM to SRAM</li>
+          <li>Recomputation, to avoid storing the large O(N2) activations for backward</li>
+        </ol>
+        <div class="stats">
+          <div class="stat"><span class="stat-value">3–5×</span><span class="stat-label">faster · seq&nbsp;&gt;&nbsp;1K</span></div>
+          <div class="stat"><span class="stat-value">&lt; O(N²)</span><span class="stat-label">memory scaling</span></div>
+        </div>
+        <div class="badges">
+          <span class="badge">Triton</span>
+          <span class="badge">CUDA</span>
+          <span class="badge">GPU kernels</span>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2 id="engineering-projects"><span class="section-icon">⚙️</span>Engineering projects</h2>
+    <ul class="card-grid">
+      <li class="project-card card-feature">
+        <span class="ribbon">Benchmarked</span>
+        <h3><a href="https://github.com/juannpmari/inference-server">Inference server</a></h3>
+        <p>a server to serve LLMs efficiently</p>
+        <div class="stats">
+          <div class="stat"><span class="stat-value">3.7K</span><span class="stat-label">peak tok/s</span></div>
+          <div class="stat"><span class="stat-value">10.8×</span><span class="stat-label">throughput @ 16× load</span></div>
+          <div class="stat"><span class="stat-value">91%</span><span class="stat-label">of peak @ 40% latency</span></div>
+        </div>
+        <div class="badges">
+          <span class="badge">vLLM</span>
+          <span class="badge">gRPC</span>
+          <span class="badge">Redis KV cache</span>
+          <span class="badge">Kubernetes</span>
+          <span class="badge">Prometheus</span>
+        </div>
+        <div class="card-links">
+          <a class="cta" href="projects/inference-server.html">View benchmarks &amp; architecture →</a>
+        </div>
+      </li>
+
+      <li class="project-card">
+        <h3><a href="https://github.com/juannpmari/stock-analyzer-mcp">MCP for stock analysis</a></h3>
+        <p>an MCP server built on top of YahooFinance API</p>
+        <a class="card-media" href="https://github.com/juannpmari/stock-analyzer-mcp" aria-label="Open stock analyzer MCP demo">
+          <img loading="lazy" src="https://raw.githubusercontent.com/juannpmari/stock-analyzer-mcp/main/assets/example.gif" alt="Animated demo of the stock analysis MCP server in action">
+        </a>
+        <div class="badges">
+          <span class="badge">MCP</span>
+          <span class="badge">Docker</span>
+          <span class="badge">8 tools</span>
+          <span class="badge">SMA/EMA/RSI/MACD</span>
+        </div>
+      </li>
+
+      <li class="project-card">
+        <h3><a href="https://github.com/juannpmari/travel-planner-langgraph">Multi-agent for travel planning</a></h3>
+        <p>a multi-agent system built on Langgraph to help planning trips</p>
+        <a class="card-media" href="https://raw.githubusercontent.com/juannpmari/travel-planner-langgraph/main/graph_092624.png" aria-label="Open the agent graph">
+          <img loading="lazy" src="https://raw.githubusercontent.com/juannpmari/travel-planner-langgraph/main/graph_092624.png" alt="LangGraph supervisor agent graph for the travel planner">
+        </a>
+        <div class="badges">
+          <span class="badge">LangGraph</span>
+          <span class="badge">MongoDB Atlas</span>
+          <span class="badge">Azure Functions</span>
+          <span class="badge">LangSmith</span>
+        </div>
+        <div class="card-links">
+          <a class="cta" href="https://t.me/TravelPlannerARBot">Try the live Telegram bot →</a>
+        </div>
+      </li>
+    </ul>
+  </section>
+
 </div>
 
 </body>

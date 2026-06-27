@@ -1,347 +1,551 @@
-/* style.css
-    Minimalistic, formal & modern portfolio styles for the provided HTML.
-    - USES A MODERN DARK THEME PALETTE
-    - Responsive typography with clamp()
-    - Clear spacing, readable measures, subtle card visuals
-    - Accessible focus states and high-contrast link styles
+/* styles.css
+   Modern, polished portfolio — dark-first with a refined light theme fallback.
+   - Animated gradient background with soft orbs + grid overlay
+   - Glassmorphic project cards with hover lift and accent glow
+   - Responsive typography with clamp(), fluid card grid
+   - Accessible focus states, reduced-motion support
 */
 
-/* ---- Fonts ---- */
-/* If you prefer a local font, replace the @import with your font stack */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
+/* ---- Theme tokens (dark-first) ---- */
 :root{
-  /* Colors (Light Theme - Kept for fallback/print, but main focus is dark mode) */
-  --bg: #f7f8f9;            /* page background */
-  --card: #ffffff;          /* panel background */
-  --muted: #6b7280;          /* secondary text */
-  --text: #0f172a;           /* primary text */
-  --accent: #0b63ff;         /* link / accent */
-  --accent-weak: rgba(11,99,255,0.08);
-  --border: #e6e9ee;
-  --glass: rgba(15,23,42,0.03);
+  --bg: #0b0f17;
+  --bg-2: #0f1420;
+  --surface: rgba(255,255,255,0.04);
+  --surface-strong: rgba(255,255,255,0.06);
+  --text: #eef2f8;
+  --muted: #9aa6b8;
+  --heading: #f6f8fc;
+  --accent: #7c9cff;
+  --accent-2: #6ee7d3;
+  --accent-3: #c084fc;
+  --accent-weak: rgba(124,156,255,0.14);
+  --border: rgba(255,255,255,0.10);
+  --border-strong: rgba(255,255,255,0.16);
+  --shadow: 0 18px 50px rgba(0,0,0,0.45);
+  --shadow-glow: 0 0 0 1px rgba(124,156,255,0.25), 0 22px 60px rgba(124,156,255,0.10);
 
-  /* Typography */
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  --lead: 1.6;
-  --max-width: 860px;
-
-  /* Rhythm */
-  --space-xxs: 4px;
-  --space-xs: 8px;
-  --space-sm: 12px;
-  --space-md: 20px;
-  --space-lg: 36px;
-  --radius: 12px;
-  --shadow-sm: 0 4px 14px rgba(15,23,42,0.06);
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --max-width: 1000px;
+  --radius: 16px;
+  --lead: 1.65;
 }
 
-/* ---- Base ---- */
 * { box-sizing: border-box; }
-html,body{ height:100%; }
+html { scroll-behavior: smooth; }
+html, body { min-height: 100%; }
+
 body{
-  margin:0;
+  margin: 0;
   font-family: var(--font-sans);
-  background: linear-gradient(180deg,var(--bg), #ffffff 60%);
+  background: var(--bg);
   color: var(--text);
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
   line-height: var(--lead);
-  line-height: var(--lead);
-  /* REVISED: Keep a general padding, but rely on margin for vertical spacing */
-  padding: clamp(18px, 3vw, 32px); 
-  /* REMOVE vertical centering to allow content to start at the top */
-  display: block; 
-  align-items: initial;
-  justify-content: initial;
   font-size: 16px;
-  /* Add minimum padding to the top of the body itself */
-  padding-top: 40px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: clamp(24px, 5vw, 64px) clamp(18px, 4vw, 32px);
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* Centered container with readable measure */
+/* ---- Decorative animated background ---- */
+.bg-decor{
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(124,156,255,0.10), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, rgba(110,231,211,0.08), transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+}
+.orb{
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.5;
+  animation: float 18s ease-in-out infinite;
+}
+.orb-1{
+  width: 420px; height: 420px;
+  top: -120px; right: -80px;
+  background: radial-gradient(circle at 30% 30%, var(--accent), transparent 70%);
+}
+.orb-2{
+  width: 360px; height: 360px;
+  bottom: -140px; left: -100px;
+  background: radial-gradient(circle at 30% 30%, var(--accent-3), transparent 70%);
+  animation-delay: -8s;
+}
+.grid-overlay{
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 80%);
+}
+@keyframes float{
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%     { transform: translate(-30px, 30px) scale(1.08); }
+}
+
+/* ---- Container ---- */
 .container{
   width: 100%;
-  /* Keep max-width to ensure readability, but remove background/shadow/border */
-  max-width: var(--max-width); 
-  margin: 0 auto;
-  /* REMOVE the visible 'box' look: */
-  background: transparent !important; /* Forces transparency in both themes */
-  box-shadow: none !important;
-  border: none !important;
-  
-  /* Keep structure padding for the content inside */
-  border-radius: calc(var(--radius) + 4px);
-  padding: clamp(20px, 4vw, 48px);
-}
-
-/* If user doesn't wrap content in .container, make the body behave similarly */
-body > .container + * {}
-/* You can add <div class="container"> ... </div> around your existing HTML. If you can't, the following keeps layout tidy */
-body > :not(.container){
   max-width: var(--max-width);
-  width:100%;
-  margin:0 auto;
-  padding: 0;
+  margin: 0 auto;
 }
 
-/* ---- Header / Name ---- */
-h1{
-  margin: 0 0 8px 0;
-  font-weight: 700; /* Maintained for name */
-  letter-spacing: -0.02em;
-  font-size: clamp(1.6rem, 3.8vw, 2.4rem);
-  line-height: 1.05;
-  color: var(--text);
+/* ---- Hero ---- */
+.hero{
+  margin-bottom: clamp(32px, 6vw, 56px);
+  animation: rise 0.7s cubic-bezier(.22,.61,.36,1) both;
+}
+.eyebrow{
   display: inline-block;
-  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  margin: 0 0 14px 0;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+}
+h1{
+  margin: 0 0 18px 0;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  line-height: 1.04;
+  color: var(--heading);
+}
+h1 .role{
+  background: linear-gradient(100deg, var(--accent), var(--accent-3) 60%, var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+.lead{
+  margin: 0;
+  max-width: 72ch;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.6vw, 1.12rem);
+  font-weight: 400;
 }
 
-/* subtle accent underline */
-h1::after{
-  content: "";
-  display:block;
-  width: 60px;
-  height: 6px;
-  border-radius: 6px;
-  margin-top: 12px;
-  background: linear-gradient(90deg,var(--accent), #6b8cff);
-  box-shadow: 0 6px 18px var(--accent-weak);
-  opacity: 0.95;
+/* ---- Sections ---- */
+.section{
+  margin-top: clamp(40px, 7vw, 64px);
+  animation: rise 0.7s cubic-bezier(.22,.61,.36,1) both;
+  animation-delay: 0.1s;
 }
-
-/* Subheading (not provided, but safe) */
 h2{
-  margin: 28px 0 12px 0;
-  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
-  font-weight: 600;
-  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 22px 0;
+  font-size: clamp(1.25rem, 3vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--heading);
+}
+.section-icon{
+  display: inline-grid;
+  place-items: center;
+  width: 38px; height: 38px;
+  font-size: 1.05rem;
+  border-radius: 11px;
+  background: var(--accent-weak);
+  border: 1px solid var(--border);
+}
+
+/* ---- Card grid ---- */
+.card-grid{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.project-card{
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 22px 24px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+  overflow: hidden;
+}
+/* gradient top edge that lights up on hover */
+.project-card::before{
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-3), var(--accent-2));
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+.project-card:hover{
+  transform: translateY(-5px);
+  border-color: var(--border-strong);
+  background: var(--surface-strong);
+  box-shadow: var(--shadow-glow);
+}
+.project-card:hover::before{ opacity: 1; }
+
+.project-card h3{
+  margin: 0 0 8px 0;
+  font-size: 1.18rem;
+  font-weight: 700;
   letter-spacing: -0.01em;
 }
-
-/* Paragraphs */
-p{
+.project-card > p{
   margin: 0 0 14px 0;
+  color: var(--muted);
+  font-size: 0.96rem;
+}
+
+/* ---- Feature list inside cards ---- */
+.feature-list{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: feat;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.feature-list li{
+  counter-increment: feat;
+  position: relative;
+  padding: 7px 12px 7px 38px;
+  font-size: 0.9rem;
   color: var(--text);
-  font-weight: 400;
-  font-size: clamp(0.98rem, 1.5vw, 1.03rem);
-  max-width: 70ch;
-}
-
-/* Make long first paragraph a slightly more prominent lead */
-p:first-of-type{
-  color: #0b1220;
-  opacity: 0.95;
-  font-size: clamp(1rem, 1.6vw, 1.06rem);
-  /* The color here will be overridden in the dark mode block */
-}
-
-/* ---- Lists (projects / papers) ---- */
-ul, ol{
-  margin: 0 0 16px 0;
-  padding-left: 1.15em;
-  color: var(--text);
-}
-
-/* Project / paper list items — render as cards */
-ul > li{
-  /* Switched to a solid color and slightly darker border for modern dark card */
-  background: var(--glass);
-  border-radius: 10px;
-  padding: 12px 14px;
-  margin: 10px 0;
+  background: rgba(255,255,255,0.03);
   border: 1px solid var(--border);
-  display: block;
-  /* Add a subtle lift/shadow on hover for interaction */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 9px;
+}
+.feature-list li::before{
+  content: counter(feat);
+  position: absolute;
+  left: 9px; top: 50%;
+  transform: translateY(-50%);
+  width: 20px; height: 20px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-weak);
+  border-radius: 6px;
 }
 
-ul > li:hover{
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
-}
-
-
-/* Make nested ordered lists compact and indented */
-ul > li ol{
-  margin-top: 8px;
-  padding-left: 1.05em;
-}
-
-/* Links */
+/* ---- Links ---- */
 a{
   color: var(--accent);
   text-decoration: none;
-  /* Increased link weight slightly for better dark mode visibility */
   font-weight: 600;
-  border-bottom: 1px solid rgba(11,99,255,0.12);
-  padding-bottom: 2px;
-  transition: color 160ms ease, transform 120ms ease;
+  transition: color .15s ease;
 }
-a:hover, a:focus{
-  /* Adjusted hover color for better contrast in dark mode */
-  color: #0847c9;
-  transform: translateY(-1px);
-  outline: none;
-}
-
-/* Muted text for descriptions inside list items */
-ul > li p{
-  margin: 0;
-  color: var(--muted);
-  font-weight: 400;
-  font-size: 0.98rem;
-}
-
-/* Inline badges for small metadata (if needed) */
-.badge{
-  display: inline-block;
-  font-size: 0.75rem;
-  padding: 6px 8px;
-  border-radius: 999px;
-  background: var(--accent-weak);
-  color: var(--accent);
-  font-weight: 600;
-  margin-left: 8px;
-}
-
-/* ---- Layout helpers ---- */
-.row{
-  display:flex;
-  gap: var(--space-md);
+.project-card h3 a{
+  display: inline-flex;
   align-items: center;
+  gap: 6px;
+  color: var(--heading);
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0% 2px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size .25s ease, color .2s ease;
+}
+.project-card h3 a::after{
+  content: "↗";
+  font-size: 0.85em;
+  color: var(--accent);
+  opacity: 0.6;
+  transition: transform .2s ease, opacity .2s ease;
+}
+.project-card:hover h3 a{
+  color: var(--accent);
+  background-size: 100% 2px;
+}
+.project-card:hover h3 a::after{
+  transform: translate(2px,-2px);
+  opacity: 1;
+}
+
+/* ---- Tech badges ---- */
+.badges{
+  display: flex;
   flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 16px;
+}
+.badge{
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.01em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
 }
 
-/* Two-column layout for skills/projects when screen wide */
-@media (min-width: 880px){
-  .two-cols{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 22px;
-  }
+/* ---- Inline stat pills (cards) ---- */
+.stats{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+.stat{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 9px 14px;
+  border-radius: 12px;
+  background: var(--accent-weak);
+  border: 1px solid var(--border);
+  min-width: 0;
+}
+.stat-value{
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  color: var(--heading);
+}
+.stat-label{
+  font-size: 0.72rem;
+  color: var(--muted);
 }
 
-/* ---- Small UI details ---- */
-hr{
-  border: none;
-  height: 1px;
-  background: var(--border);
-  margin: 28px 0;
-  border-radius: 2px;
+/* ---- Card media (gif / diagram thumbnails) ---- */
+.card-media{
+  display: block;
+  margin-top: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,0.2);
+  line-height: 0;
+}
+.card-media img{
+  width: 100%;
+  height: 100%;
+  display: block;
+  max-height: 230px;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform .35s ease;
+}
+.card-media:hover img{ transform: scale(1.03); }
+
+/* ---- Card call-to-action link ---- */
+.card-links{ margin-top: 16px; }
+.cta{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 9px 14px;
+  border-radius: 10px;
+  color: var(--heading);
+  background: linear-gradient(100deg, var(--accent-weak), rgba(192,132,252,0.12));
+  border: 1px solid var(--border-strong);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.cta:hover{
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-glow);
 }
 
-/* Accessibility: focus ring for keyboard users */
-:focus{
-  outline: 3px solid rgba(11,99,255,0.15);
+/* ---- Featured card + ribbon ---- */
+.card-feature{ border-color: var(--border-strong); }
+.card-feature::before{ opacity: 0.6; }
+.ribbon{
+  position: absolute;
+  top: 14px; right: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 999px;
+  color: var(--accent-2);
+  background: rgba(110,231,211,0.10);
+  border: 1px solid var(--border);
+}
+
+/* ---- Detail page: nav ---- */
+.topnav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: clamp(24px, 4vw, 36px);
+  animation: rise 0.6s cubic-bezier(.22,.61,.36,1) both;
+}
+.back-link, .repo-link{
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  transition: transform .2s ease, border-color .2s ease, color .2s ease;
+}
+.back-link:hover, .repo-link:hover{
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---- Detail page: big stat grid ---- */
+.stat-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+.stat-box{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform .25s ease, border-color .25s ease;
+}
+.stat-box:hover{ transform: translateY(-4px); border-color: var(--border-strong); }
+.stat-box-value{
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(100deg, var(--accent), var(--accent-3) 70%, var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.stat-box-label{ font-size: 0.86rem; color: var(--muted); }
+
+/* ---- Detail page: charts ---- */
+.chart-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+}
+.chart{
+  margin: 0;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+.chart:hover{ transform: translateY(-4px); border-color: var(--border-strong); box-shadow: var(--shadow); }
+.chart.chart-wide{ grid-column: 1 / -1; max-width: 760px; margin: 0 auto; }
+.chart img{
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+  background: #fff;
+}
+.chart figcaption{
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.footnote{
+  margin-top: clamp(40px, 6vw, 56px);
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+/* ---- Animations ---- */
+@keyframes rise{
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Accessibility ---- */
+:focus-visible{
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 6px;
 }
-
-/* Print-friendly adjustments */
-@media print{
-  body{ background: white; color: black; padding: 0; }
-  .container{ box-shadow: none; border: none; border-radius: 0; padding: 0; }
-  a::after{ content: " (" attr(href) ")"; font-size: 90%; color: #222; }
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
 
-/* Dark mode support for users who prefer it - MODIFIED FOR MODERN DARK THEME */
-@media (prefers-color-scheme: dark){
+/* ---- Light theme fallback ---- */
+@media (prefers-color-scheme: light){
   :root{
-    /* Dark Grey/Black-y Palette */
-    --bg: #111827;            /* Base Dark Gray */
-    --card: #1f2937;          /* Slightly lighter dark gray for cards/container */
-    --muted: #9ca3af;         /* Light gray for secondary text */
-    --text: #f3f4f6;          /* Near white for primary text */
-    --accent: #60a5fa;        /* Soft blue accent */
-    --accent-weak: rgba(96,165,250,0.12);
-    --border: rgba(255,255,255,0.15); /* Subtle white border */
-    --glass: rgba(255,255,255,0.06); /* Very subtle card background */
-    /* Stronger shadow for depth on dark background */
-    --shadow-sm: 0 10px 30px rgba(0,0,0,0.4); 
+    --bg: #f4f6fb;
+    --bg-2: #eaeefb;
+    --surface: rgba(255,255,255,0.75);
+    --surface-strong: #ffffff;
+    --text: #1a2236;
+    --muted: #586079;
+    --heading: #0f1626;
+    --accent: #3a5bff;
+    --accent-2: #0fb39a;
+    --accent-3: #9333ea;
+    --accent-weak: rgba(58,91,255,0.10);
+    --border: rgba(15,22,38,0.10);
+    --border-strong: rgba(15,22,38,0.18);
+    --shadow-glow: 0 0 0 1px rgba(58,91,255,0.18), 0 22px 50px rgba(58,91,255,0.12);
   }
-  
-  body{
-    /* Gradient for shade: dark gray to slightly deeper dark gray/black-y at the bottom */
-    background: linear-gradient(180deg,var(--bg), #0f131a 80%);
+  .grid-overlay{
+    background-image:
+      linear-gradient(to right, rgba(15,22,38,0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(15,22,38,0.04) 1px, transparent 1px);
   }
-
-  /* White letters/thick letters consideration */
-  h1, h2, p, ul, ol, .kv strong {
-    color: var(--text) !important; /* Ensure all text is the bright white */
-    /* Text thickness is controlled by font-weight in the base styles (700 for h1, 600 for h2/links/strong, 400 for p) which is already good */
-  }
-
-  p:first-of-type{
-    color: var(--text); /* Set lead paragraph text to primary text color */
-  }
-
-  .container{
-  /* Ensure the container is transparent in dark mode too */
-    background: transparent !important; 
-    border: none !important;
-    box-shadow: none !important;
-  }
-
-  ul > li{
-    /* Use the subtle glass for list items, slightly transparent over the card background */
-    background: var(--glass);
-    border-color: var(--border);
-  }
-
-  a{ border-bottom-color: rgba(96,165,250,0.3); } /* Clearer underline */
-  a:hover{ color: #3b82f6; } /* Slightly brighter blue on hover */
-  
-  h1::after{ 
-    box-shadow: 0 8px 28px var(--accent-weak); /* Subtle light shadow */
-    /* Updated gradient to match the new accent color */
-    background: linear-gradient(90deg,var(--accent), #93c5fd);
-  }
-  
-  hr{ background: var(--border); }
-  
-  code, pre{
-    background: rgba(255,255,255,0.08); /* Light background for code blocks */
-    color: var(--text);
-  }
-
-  /* Accessibility focus state */
-  :focus{
-    outline: 3px solid rgba(96,165,250,0.4); 
-  }
+  .orb{ opacity: 0.35; }
+  .feature-list li{ background: rgba(15,22,38,0.03); }
+  .project-card{ box-shadow: 0 10px 30px rgba(15,22,38,0.06); }
 }
 
-/* Small utilities (optional) */
-.kv{
-  display:flex;
-  gap: 12px;
-  align-items: baseline;
-  color: var(--muted);
-}
-.kv strong{
-  color: var(--text);
-  font-weight: 600;
-}
-
-/* Ensure default ordered list numbers are clearly visible and aligned */
-ol{
-  margin-left: 1.15em;
-}
-
-/* Make code/inline code look neat (if any) */
-code, pre{
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
-  background: rgba(15,23,42,0.03);
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 0.95em;
-}
-
-/* Final: small responsive padding adjustments */
+/* ---- Responsive ---- */
 @media (max-width: 520px){
-  .container{
-    padding: 18px;
-    border-radius: 10px;
-  }
-  h1::after{ width: 48px; height: 5px; margin-top: 10px; }
+  .project-card{ padding: 18px; }
+  .card-grid{ grid-template-columns: 1fr; }
+}
+
+/* ---- Print ---- */
+@media print{
+  body{ background: #fff; color: #000; padding: 0; }
+  .bg-decor{ display: none; }
+  .project-card{ box-shadow: none; border: 1px solid #ccc; }
+  a::after{ content: " (" attr(href) ")"; font-size: 85%; }
 }
